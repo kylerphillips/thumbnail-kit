@@ -107,10 +107,11 @@ function Plugin() {
     return fileName.substring(0, fileName.lastIndexOf("."));
   }
 
-  // const handleCreateRectanglesButtonClick =
-  //   function () {
-  //       emit<CreateThumbnailHandler>('CREATE_THUMBNAIL', project )
-  //   }
+  const [darkMode, setDarkMode] = useState(false);
+
+  const handleDarkModeToggle = (e: any) => {
+    setDarkMode(e.target.checked);
+  };
 
   const handleCloseButtonClick = useCallback(function () {
     emit<CloseHandler>("CLOSE");
@@ -125,7 +126,17 @@ function Plugin() {
         }}
       >
         <Text bold>Preview</Text>
-        {/* <Toggle /> */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            columnGap: 8,
+            overflow: "hidden",
+          }}
+        >
+          <Text>Dark mode</Text>
+          <Toggle onChange={handleDarkModeToggle} value={darkMode} />
+        </div>
       </div>
 
       <VerticalSpace space="extraLarge"></VerticalSpace>
