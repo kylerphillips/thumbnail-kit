@@ -84,16 +84,16 @@ export const Preview = ({
                   style={{
                     display: "flex",
                     columnGap: 8,
-                    height: 48,
                     alignItems: "center",
                     paddingLeft: overlap,
+                    marginTop: 5,
                   }}
                 >
                   {avatars.map((avatar, index) => (
                     <div
                       style={{
-                        width: 20,
-                        height: 20,
+                        width: 24,
+                        height: 24,
                         borderRadius: "50%",
                         marginLeft: -overlap,
                         position: "relative",
@@ -102,8 +102,8 @@ export const Preview = ({
                       <img
                         src={avatar.url}
                         style={{
-                          width: 20,
-                          height: 20,
+                          width: 24,
+                          height: 24,
                           borderRadius: "50%",
                           border: "1px solid #1c1c1e",
                           objectFit: "cover",
