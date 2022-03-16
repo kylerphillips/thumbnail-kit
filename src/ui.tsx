@@ -12,7 +12,6 @@ import {
   TextboxAutocompleteOption,
   FileUploadDropzone
 } from '@create-figma-plugin/ui'
-<<<<<<< HEAD
 import { emit, on } from '@create-figma-plugin/utilities'
 import { h, JSX } from 'preact'
 import { useCallback, useState, useEffect } from 'preact/hooks'
@@ -25,32 +24,18 @@ import { CloseHandler, CreateThumbnailHandler,
   DroppedImage,
   InsertBigImageHandler,
    } from './types'
-=======
-import { emit } from '@create-figma-plugin/utilities'
-import { h, JSX } from 'preact'
-import { useCallback, useState } from 'preact/hooks'
-
-import { CloseHandler, CreateThumbnailHandler } from './types'
->>>>>>> main
 
 
 
 function Plugin() {
 
   // handle image uploaded files 
-<<<<<<< HEAD
 
 
   const [index, setIndex] = useState(0)
   const [total, setTotal] = useState(0)
 
   // accepted file uploads
-=======
-  function handleSelectedFiles(files: Array<File>) {
-    console.log(files)
-  }
- // accepted file uploads
->>>>>>> main
   const acceptedFileTypes = ['image/x-png','image/jpeg']
 
   const [project, setProject] = useState('');
@@ -65,7 +50,6 @@ function Plugin() {
  setStatus(newValue)
 }
 
-<<<<<<< HEAD
   
   const handleSelectedFiles = useCallback(
     async function (files: Array<File>) {
@@ -115,8 +99,6 @@ function Plugin() {
 
  
 
-=======
->>>>>>> main
 const options: Array<TextboxAutocompleteOption> = [
     { value: 'In Progress' },
     { value: 'Ready for Dev' },
@@ -125,17 +107,10 @@ const options: Array<TextboxAutocompleteOption> = [
     { value: 'Outdated/Archive' }
   ]
   
-<<<<<<< HEAD
   // const handleCreateRectanglesButtonClick = 
   //   function () {
   //       emit<CreateThumbnailHandler>('CREATE_THUMBNAIL', project )
   //   }
-=======
-  const handleCreateRectanglesButtonClick = 
-    function () {
-        emit<CreateThumbnailHandler>('CREATE_THUMBNAIL', project)
-    }
->>>>>>> main
 
 
   const handleCloseButtonClick = useCallback(function () {
@@ -175,11 +150,7 @@ const options: Array<TextboxAutocompleteOption> = [
       </Text>
    </FileUploadDropzone>
    <VerticalSpace space="extraLarge"></VerticalSpace>
-<<<<<<< HEAD
        <Button fullWidth >
-=======
-       <Button fullWidth onClick={handleCreateRectanglesButtonClick}>
->>>>>>> main
           Create thumbnail
         </Button>
        </Container>
@@ -187,7 +158,3 @@ const options: Array<TextboxAutocompleteOption> = [
 }
 
 export default render(Plugin)
-<<<<<<< HEAD
-
-=======
->>>>>>> main
