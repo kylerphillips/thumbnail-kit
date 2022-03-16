@@ -94,11 +94,6 @@ function Plugin() {
     return fileName.substring(0, fileName.lastIndexOf('.'))
   }
   
-
-
-
- 
-
 const options: Array<TextboxAutocompleteOption> = [
     { value: 'In Progress' },
     { value: 'Ready for Dev' },
