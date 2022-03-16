@@ -24,6 +24,10 @@ async function createImageElementFromFileAsync(
   });
 }
 
+export function createImageURLFromFile(object: Blob | File): string {
+  return URL.createObjectURL(object);
+}
+
 const MAX_DIMENSION = 4096;
 
 // Splits `dimensions` into an array of numbers that are each smaller than `MAX_DIMENSION`

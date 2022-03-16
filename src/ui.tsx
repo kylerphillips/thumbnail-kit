@@ -16,7 +16,10 @@ import { emit, on } from "@create-figma-plugin/utilities";
 import { h, JSX } from "preact";
 import { useCallback, useState, useEffect } from "preact/hooks";
 
-import { splitImageAsync } from "./utilities/split-image-async.js";
+import {
+  splitImageAsync,
+  createImageURLFromFile,
+} from "./utilities/split-image-async.js";
 
 import {
   CloseHandler,
@@ -26,11 +29,15 @@ import {
   InsertBigImageHandler,
 } from "./types";
 
+import { AvatarUpload } from "./components";
+
 function Plugin() {
   // handle image uploaded files
 
   const [index, setIndex] = useState(0);
   const [total, setTotal] = useState(0);
+
+  const [images, setImages] = useState<any[]>([]);
 
   // accepted file uploads
   const acceptedFileTypes = ["image/x-png", "image/jpeg"];
@@ -52,6 +59,8 @@ function Plugin() {
       const total = files.length;
       setTotal(total);
       let index = 0;
+      let newImages: string[] = [];
+      console.log(files);
       for (const file of files) {
         const images = await splitImageAsync(file);
         const name = trimExtension(file.name);
@@ -62,7 +71,9 @@ function Plugin() {
         });
         setIndex(index);
         index += 1;
+        newImages.push(createImageURLFromFile(file));
       }
+      setImages([...images, ...newImages]);
     },
     [setIndex, setTotal]
   );
@@ -139,9 +150,12 @@ function Plugin() {
 
       <Text>Add collaborators</Text>
       <VerticalSpace space="small"></VerticalSpace>
+      <AvatarUpload />
+      <VerticalSpace space="small"></VerticalSpace>
       <FileUploadDropzone
         acceptedFileTypes={acceptedFileTypes}
-        onSelectedFiles={handleSelectedFiles}
+        onSelectedFiles={(x) => console.log({ x })}
+        // onSelectedFiles={handleSelectedFiles}
       >
         <Text align="center" muted>
           +
@@ -149,6 +163,7 @@ function Plugin() {
       </FileUploadDropzone>
       <VerticalSpace space="extraLarge"></VerticalSpace>
       <Button fullWidth>Create thumbnail</Button>
+      {JSON.stringify(images)}
     </Container>
   );
 }
