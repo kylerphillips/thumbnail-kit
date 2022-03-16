@@ -5,9 +5,8 @@ import { v4 as uuid } from "uuid";
 import { Avatar } from "../types";
 import { Plus, TrashSimple } from "../icons";
 
-export const AvatarUpload = () => {
+export const AvatarUpload = ({ avatars, setAvatars }) => {
   const acceptedFileTypes = ["image/x-png", "image/png", "image/jpeg"];
-  const [avatars, setAvatars] = useState<Avatar[]>([]);
   const [hover, setHover] = useState<string>("");
 
   const onFileUpload = (event: any) => {
@@ -69,7 +68,7 @@ export const AvatarUpload = () => {
                   width: 48,
                   height: 48,
                   borderRadius: "50%",
-                  //   border: "3px solid #1c1c1e",
+                  border: "3px solid #ffffff",
                   objectFit: "cover",
                 }}
               />
