@@ -7,10 +7,7 @@ import {
   Textbox,
   VerticalSpace,
   Toggle,
-  Divider,
   TextboxAutocomplete,
-  TextboxAutocompleteOption,
-  FileUploadDropzone,
 } from "@create-figma-plugin/ui";
 import { emit, on } from "@create-figma-plugin/utilities";
 import { h, JSX } from "preact";
@@ -48,7 +45,15 @@ function Plugin() {
     setProject(newValue);
   }
 
-  const [status, setStatus] = useState("");
+  const options: { value: string }[] = [
+    { value: "In Progress" },
+    { value: "Ready for Dev" },
+    { value: "Ready for Feedback" },
+    { value: "Completed" },
+    { value: "Outdated/Archive" },
+  ];
+
+  const [status, setStatus] = useState(options[0].value);
   function handleStatus(event: JSX.TargetedEvent<HTMLInputElement>) {
     const newValue = event.currentTarget.value;
     setStatus(newValue);
@@ -102,14 +107,6 @@ function Plugin() {
     return fileName.substring(0, fileName.lastIndexOf("."));
   }
 
-  const options: Array<TextboxAutocompleteOption> = [
-    { value: "In Progress" },
-    { value: "Ready for Dev" },
-    { value: "Ready for Feedback" },
-    { value: "Completed" },
-    { value: "Outdated/Archive" },
-  ];
-
   // const handleCreateRectanglesButtonClick =
   //   function () {
   //       emit<CreateThumbnailHandler>('CREATE_THUMBNAIL', project )
@@ -121,7 +118,15 @@ function Plugin() {
   return (
     <Container>
       <VerticalSpace space="extraLarge"></VerticalSpace>
-      <Text>Preview</Text>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text bold>Preview</Text>
+        {/* <Toggle /> */}
+      </div>
 
       <VerticalSpace space="extraLarge"></VerticalSpace>
       <VerticalSpace space="extraLarge"></VerticalSpace>
@@ -129,41 +134,60 @@ function Plugin() {
       <VerticalSpace space="extraLarge"></VerticalSpace>
 
       <VerticalSpace space="extraLarge"></VerticalSpace>
-      <Text>Project Name</Text>
-      <VerticalSpace space="small"></VerticalSpace>
-      <Textbox
-        onInput={handleProjectInput}
-        placeholder="e.g Company design system"
-        value={project}
-      />
-      <VerticalSpace space="extraLarge"></VerticalSpace>
-      <Text>Project Status</Text>
+      <div
+        style={{
+          display: "flex",
+          columnGap: 16,
+        }}
+      >
+        <div style={{ flex: 1 }}>
+          <Text bold>Project Name</Text>
+          <VerticalSpace space="small"></VerticalSpace>
+          <Textbox
+            onInput={handleProjectInput}
+            placeholder="e.g. File name"
+            value={project}
+          />
+          <VerticalSpace space="extraLarge"></VerticalSpace>
+        </div>
+        <div style={{ flex: 1 }}>
+          <Text bold>Project Status</Text>
 
-      <VerticalSpace space="small"></VerticalSpace>
-      <TextboxAutocomplete
-        onInput={handleStatus}
-        placeholder="In Progress"
-        options={options}
-        value={status}
-      />
-      <VerticalSpace space="extraLarge"></VerticalSpace>
+          <VerticalSpace space="small"></VerticalSpace>
+          <TextboxAutocomplete
+            onInput={handleStatus}
+            placeholder="e.g. In Progress"
+            options={options}
+            value={status}
+          />
+          <VerticalSpace space="extraLarge"></VerticalSpace>
+        </div>
+      </div>
 
-      <Text>Add collaborators</Text>
+      <Text bold>Collaborators</Text>
+      <VerticalSpace space="extraSmall"></VerticalSpace>
+      <Text
+        style={{
+          color: "909090",
+        }}
+      >
+        Tap the + to upload an avatar for someone working on this file
+      </Text>
       <VerticalSpace space="small"></VerticalSpace>
       <AvatarUpload />
       <VerticalSpace space="small"></VerticalSpace>
-      <FileUploadDropzone
-        acceptedFileTypes={acceptedFileTypes}
-        onSelectedFiles={(x) => console.log({ x })}
-        // onSelectedFiles={handleSelectedFiles}
-      >
-        <Text align="center" muted>
-          +
-        </Text>
-      </FileUploadDropzone>
+
       <VerticalSpace space="extraLarge"></VerticalSpace>
-      <Button fullWidth>Create thumbnail</Button>
-      {JSON.stringify(images)}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "end",
+          columnGap: 8,
+        }}
+      >
+        <Button secondary>Cancel</Button>
+        <Button>Create Thumbnail</Button>
+      </div>
     </Container>
   );
 }

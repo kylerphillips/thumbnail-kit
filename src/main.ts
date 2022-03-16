@@ -192,6 +192,6 @@ export default async function (): Promise<void> {
   );
   showUI({
     width: 450,
-    height: 500,
+    height: 400,
   });
 }
