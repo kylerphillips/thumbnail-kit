@@ -58,7 +58,7 @@ function Plugin() {
       let index = 0
       for (const file of files) {
         const images = await splitImageAsync(file)
-        const name = trimExtension(file.name)
+        const name = trimExtension(file.name) 
         console.log(images)
         emit<CreateThumbnailHandler>('CREATE_THUMBNAIL', project, images, {
           done: index === total - 1,
@@ -70,6 +70,8 @@ function Plugin() {
     },
     [setIndex, setTotal]
   )
+
+  
   useEffect(
     function () {
       return on<DropImagesHandler>(
@@ -128,6 +130,7 @@ const options: Array<TextboxAutocompleteOption> = [
        <Textbox onInput={handleProjectInput} placeholder="e.g Company design system" value={project} />
        <VerticalSpace space="extraLarge"></VerticalSpace>
        <Text>Project Status</Text>
+
        <VerticalSpace space="small"></VerticalSpace>
        <TextboxAutocomplete
     onInput={handleStatus}

@@ -167,4 +167,4 @@ figma.setFileThumbnailNodeAsync(thumbnailFrame);
   showUI({
     width: 450,
     height: 500
-  }, settings)}
+  }, )}
