@@ -9,6 +9,7 @@ export const Preview = ({
   status,
   statusOptions,
   description,
+  darkMode,
 }) => {
   const overlap = 13;
 
@@ -50,6 +51,7 @@ export const Preview = ({
             <StatusPreview
               status={status || statusOptions[0].value}
               statusOptions={statusOptions}
+              darkMode={darkMode}
             />
             <p
               style={{

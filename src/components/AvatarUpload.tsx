@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import { Avatar } from "../types";
 import { Plus, TrashSimple } from "../icons";
 
-export const AvatarUpload = ({ avatars, setAvatars }) => {
+export const AvatarUpload = ({ avatars, setAvatars, darkMode }) => {
   const acceptedFileTypes = ["image/x-png", "image/png", "image/jpeg"];
   const [hover, setHover] = useState<string>("");
 

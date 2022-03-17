@@ -1,6 +1,6 @@
 import { h } from "preact";
 
-export const StatusPreview = ({ status, statusOptions }) => {
+export const StatusPreview = ({ status, statusOptions, darkMode }) => {
   const {
     textColor,
     backgroundColor,

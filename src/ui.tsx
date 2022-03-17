@@ -174,6 +174,7 @@ function Plugin() {
           status={status}
           statusOptions={statusOptions}
           description={description}
+          darkMode={darkMode}
         />
 
         <VerticalSpace space="small"></VerticalSpace>
@@ -231,7 +232,11 @@ function Plugin() {
         Tap the + to upload an avatar for someone working on this file
       </Text>
       <VerticalSpace space="small"></VerticalSpace>
-      <AvatarUpload avatars={avatars} setAvatars={setAvatars} />
+      <AvatarUpload
+        avatars={avatars}
+        setAvatars={setAvatars}
+        darkMode={darkMode}
+      />
       <VerticalSpace space="small"></VerticalSpace>
 
       <VerticalSpace space="extraLarge"></VerticalSpace>

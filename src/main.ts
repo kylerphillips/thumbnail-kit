@@ -7,8 +7,11 @@ import {
   formatSuccessMessage,
   pluralize,
 } from "@create-figma-plugin/utilities";
+import { InProgressPath } from "./icons";
+import svgPathPrettify from "svg-path-prettify";
 
 import { CloseHandler, CreateThumbnailHandler, StatusOption } from "./types";
+import { hexToRgb } from "./utilities/colors";
 
 export default async function (): Promise<void> {
   const result: Array<SceneNode> = [];
@@ -75,6 +78,49 @@ export default async function (): Promise<void> {
       metaTitle.x = 420;
       metaTitle.y = 209;
 
+      // Create tag
+      let tag = figma.createText();
+      tag.fontName = blackFont;
+      tag.characters = status.value;
+      tag.textCase = "UPPER";
+      tag.fills = [
+        {
+          type: "SOLID",
+          color: hexToRgb(status.textColor),
+        },
+      ];
+      tag.fontSize = 20;
+      const tagContainer = figma.createFrame();
+      tagContainer.layoutMode = "HORIZONTAL";
+      tagContainer.fills = [
+        { type: "SOLID", color: hexToRgb(status.backgroundColor) },
+      ];
+
+      let tagIcon = figma.createVector();
+      tagIcon.vectorPaths = InProgressPath.map((path) => ({
+        ...path,
+        data: svgPathPrettify(path.data),
+      }));
+      tagIcon.fills = [
+        {
+          type: "SOLID",
+          color: hexToRgb(status.textColor),
+        },
+      ];
+
+      const horizontalPadding = 32;
+      const veritcalPadding = 16;
+
+      tagContainer.resize(
+        tag.width + horizontalPadding * 2,
+        20 + veritcalPadding * 2
+      );
+      tagContainer.itemSpacing = 12;
+      tagContainer.horizontalPadding = horizontalPadding;
+      tagContainer.verticalPadding = veritcalPadding;
+      tagContainer.cornerRadius = 12;
+      tagContainer.primaryAxisSizingMode = "AUTO";
+
       // Create title + description container
       const titleContainer = figma.createFrame();
       titleContainer.name = "Title Container";
@@ -85,6 +131,10 @@ export default async function (): Promise<void> {
           color: { r: 0.1098039216, g: 0.1098039216, b: 0.1176470588 },
         },
       ];
+      titleContainer.appendChild(tag);
+      titleContainer.appendChild(tagContainer);
+      tagContainer.appendChild(tag);
+      tagContainer.appendChild(tagIcon);
       titleContainer.appendChild(metaTitle);
       titleContainer.clipsContent = false;
 

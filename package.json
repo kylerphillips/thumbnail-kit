@@ -3,6 +3,7 @@
     "@create-figma-plugin/ui": "^1.8.4",
     "@create-figma-plugin/utilities": "^1.8.4",
     "preact": "^10",
+    "svg-path-prettify": "^0.1.5",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
