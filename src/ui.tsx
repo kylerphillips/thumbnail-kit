@@ -15,17 +15,13 @@ import { h, JSX } from "preact";
 import { useCallback, useState, useEffect } from "preact/hooks";
 
 import {
-  splitImageAsync,
-  createImageURLFromFile,
-} from "./utilities/split-image-async.js";
-
-import {
   Avatar,
   CloseHandler,
   CreateThumbnailHandler,
   DropImagesHandler,
   DroppedImage,
   InsertBigImageHandler,
+  StatusOption,
 } from "./types";
 
 import { AvatarUpload, Preview } from "./components";
@@ -70,12 +66,7 @@ function Plugin() {
     { value: "Outdated/Archive" },
   ];
 
-  const statusOptions: {
-    value: string;
-    backgroundColor: string;
-    textColor: string;
-    svg?: (props: any) => h.JSX.Element;
-  }[] = [
+  const statusOptions: StatusOption[] = [
     {
       value: "In Progress",
       backgroundColor: "#F5E3C7",
@@ -118,54 +109,6 @@ function Plugin() {
     setStatus(newValue);
   }
 
-  const handleSelectedFiles = useCallback(
-    async function (files: Array<File>) {
-      const total = files.length;
-      setTotal(total);
-      let index = 0;
-      let newImages: string[] = [];
-      console.log(files);
-      for (const file of files) {
-        const images = await splitImageAsync(file);
-        const name = trimExtension(file.name);
-        console.log(images);
-        emit<CreateThumbnailHandler>("CREATE_THUMBNAIL", project, images, {
-          done: index === total - 1,
-          name,
-        });
-        setIndex(index);
-        index += 1;
-        newImages.push(createImageURLFromFile(file));
-      }
-      setImages([...images, ...newImages]);
-    },
-    [setIndex, setTotal]
-  );
-
-  useEffect(
-    function () {
-      return on<DropImagesHandler>(
-        "DROP_IMAGES",
-        async function (droppedImages: Array<DroppedImage>) {
-          const files: Array<File> = [];
-          for (const droppedImage of droppedImages) {
-            const blob = new Blob([droppedImage.bytes], {
-              type: droppedImage.type,
-            });
-            const file = new File([blob], droppedImage.name);
-            files.push(file);
-          }
-          await handleSelectedFiles(files);
-        }
-      );
-    },
-    [handleSelectedFiles]
-  );
-
-  function trimExtension(fileName: string): string {
-    return fileName.substring(0, fileName.lastIndexOf("."));
-  }
-
   const [darkMode, setDarkMode] = useState(false);
 
   const handleDarkModeToggle = (e: any) => {
@@ -175,6 +118,21 @@ function Plugin() {
   const handleCloseButtonClick = useCallback(function () {
     emit<CloseHandler>("CLOSE");
   }, []);
+
+  const currentStatus =
+    statusOptions.find((statusOption) => statusOption.value === status) ||
+    statusOptions[0];
+
+  const handleCreateThumbnailClick = useCallback(
+    function () {
+      emit<CreateThumbnailHandler>("CREATE_THUMBNAIL", {
+        project: project,
+        description: description,
+        status: { ...currentStatus, svg: null },
+      });
+    },
+    [project, description, currentStatus]
+  );
 
   const [avatars, setAvatars] = useState<Avatar[]>([]);
 
@@ -284,8 +242,10 @@ function Plugin() {
           columnGap: 8,
         }}
       >
-        <Button secondary>Cancel</Button>
-        <Button>Create Thumbnail</Button>
+        <Button onClick={handleCloseButtonClick} secondary>
+          Cancel
+        </Button>
+        <Button onClick={handleCreateThumbnailClick}>Create Thumbnail</Button>
       </div>
     </Container>
   );

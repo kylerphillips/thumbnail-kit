@@ -1,6 +1,5 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
-import { createImageURLFromFile } from "../utilities/split-image-async";
 import { v4 as uuid } from "uuid";
 import { Avatar } from "../types";
 import { Plus, TrashSimple } from "../icons";
@@ -16,7 +15,7 @@ export const AvatarUpload = ({ avatars, setAvatars }) => {
       if (acceptedFileTypes.includes(file.type)) {
         newImages.push({
           id: uuid(),
-          url: createImageURLFromFile(file),
+          url: URL.createObjectURL(file),
           file,
         });
       }

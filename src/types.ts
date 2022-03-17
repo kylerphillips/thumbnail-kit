@@ -1,21 +1,27 @@
 import { EventHandler } from "@create-figma-plugin/utilities";
+import { h } from "preact";
 
 export interface CreateThumbnailHandler extends EventHandler {
   name: "CREATE_THUMBNAIL";
-  handler: (
-    project: string,
-    mages: Array<ImageNodePlainObject>,
-    options: {
-      name: string;
-      done: boolean;
-    }
-  ) => void;
+  handler: (options: {
+    project: string;
+    description: string;
+    status: StatusOption;
+  }) => void;
 }
+
+export type StatusOption = {
+  value: string;
+  backgroundColor: string;
+  textColor: string;
+  svg?: ((props: any) => h.JSX.Element) | null;
+};
 
 export interface CloseHandler extends EventHandler {
   name: "CLOSE";
   handler: () => void;
 }
+
 export interface InsertBigImageHandler extends EventHandler {
   name: "INSERT_BIG_IMAGE";
   handler: (
