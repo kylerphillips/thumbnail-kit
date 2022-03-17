@@ -88,6 +88,7 @@ export const AvatarUpload = ({ avatars, setAvatars }) => {
                     alignItems: "center",
                     justifyContent: "center",
                     cursor: "pointer",
+                    border: "3px solid #ffffff",
                   }}
                 >
                   <TrashSimple width={24} height={24} />

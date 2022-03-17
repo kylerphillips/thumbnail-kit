@@ -1,6 +1,7 @@
 import { h } from "preact";
 import { Document } from "../icons";
 import { Text } from "@create-figma-plugin/ui";
+import { StatusPreview } from "./StatusPreview";
 
 export const Preview = ({
   avatars,
@@ -9,7 +10,7 @@ export const Preview = ({
   statusOptions,
   description,
 }) => {
-  const overlap = 10;
+  const overlap = 13;
 
   return (
     <div
@@ -27,7 +28,7 @@ export const Preview = ({
         <div
           style={{
             width: 315,
-            height: 154,
+            height: 170,
             backgroundColor: "#1c1c1e",
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
@@ -46,21 +47,15 @@ export const Preview = ({
               paddingBottom: 10,
             }}
           >
-            <p
-              style={{
-                fontSize: 15,
-                color: "#fff",
-                margin: 0,
-                marginBottom: 10,
-              }}
-            >
-              {status || statusOptions[0].value}
-            </p>
+            <StatusPreview
+              status={status || statusOptions[0].value}
+              statusOptions={statusOptions}
+            />
             <p
               style={{
                 fontSize: 24,
                 color: "#fff",
-                fontWeight: "bold",
+                fontWeight: "black",
                 margin: 0,
                 marginBottom: 10,
               }}

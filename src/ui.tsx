@@ -29,6 +29,13 @@ import {
 } from "./types";
 
 import { AvatarUpload, Preview } from "./components";
+import {
+  InProgress,
+  Completed,
+  OutdatedArchive,
+  ReadyDev,
+  ReadyFeedback,
+} from "./icons";
 
 function Plugin() {
   // handle image uploaded files
@@ -67,53 +74,41 @@ function Plugin() {
     value: string;
     backgroundColor: string;
     textColor: string;
-    svg?: string;
+    svg?: (props: any) => h.JSX.Element;
   }[] = [
     {
       value: "In Progress",
       backgroundColor: "#F5E3C7",
       textColor: "#A96D25",
-      svg: `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M16 8C16 3.58172 12.4183 -1.93129e-07 8 0C3.58172 1.93129e-07 -1.93129e-07 3.58172 0 8C1.93129e-07 12.4183 3.58172 16 8 16C12.4183 16 16 12.4183 16 8ZM8 4V7H3V9H8V12H9L13 8L9 4H8Z" fill="#A96D25"/>
-    </svg>`,
+      svg: InProgress,
     },
 
     {
       value: "Ready for Dev",
       backgroundColor: "#DED9FF",
       textColor: "#4C4096",
-      svg: `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M8 9C8.55228 9 9 8.55228 9 8C9 7.44772 8.55228 7 8 7C7.44772 7 7 7.44772 7 8C7 8.55228 7.44772 9 8 9Z" fill="#4C4096"/>
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8ZM11 4L6 6L4 11L5 12L10 10L12 5L11 4Z" fill="#4C4096"/>
-      </svg>`,
+      svg: ReadyDev,
     },
 
     {
       value: "Ready for Feedback",
       backgroundColor: "#CEE2FF",
       textColor: "#314B73",
-      svg: `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M16 8C16 3.58172 12.4183 -1.93129e-07 8 0C3.58172 1.93129e-07 -1.93129e-07 3.58172 0 8C1.93129e-07 12.4183 3.58172 16 8 16C12.4183 16 16 12.4183 16 8ZM8 4V7H3V9H8V12H9L13 8L9 4H8Z" fill="#A96D25"/>
-    </svg>`,
+      svg: ReadyFeedback,
     },
 
     {
       value: "Completed",
       backgroundColor: "#E0EDCD",
       textColor: "#3F7000",
-      svg: `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16ZM12.7071 5.70711L11.2929 4.29289L6.5 9.08579L4.70711 7.29289L3.29289 8.70711L6.5 11.9142L12.7071 5.70711Z" fill="#3F7000"/>
-      </svg>
-      `,
+      svg: Completed,
     },
 
     {
       value: "Outdated/Archive",
       backgroundColor: "#E3E5F2",
       textColor: "#4B4E5F",
-      svg: `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16ZM4.29289 5.70711L6.58579 8L4.29289 10.2929L5.70711 11.7071L8 9.41421L10.2929 11.7071L11.7071 10.2929L9.41421 8L11.7071 5.70711L10.2929 4.29289L8 6.58579L5.70711 4.29289L4.29289 5.70711Z" fill="#4B4E5F"/>
-      </svg>`,
+      svg: OutdatedArchive,
     },
   ];
 
@@ -219,7 +214,7 @@ function Plugin() {
           avatars={avatars}
           project={project}
           status={status}
-          statusOptions={options}
+          statusOptions={statusOptions}
           description={description}
         />
 
