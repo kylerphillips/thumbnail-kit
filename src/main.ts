@@ -189,7 +189,7 @@ export default async function (): Promise<void> {
       titleContainer.appendChild(descriptionNode);
 
       // set spacing
-      contentContainer.verticalPadding = 32;
+      contentContainer.itemSpacing = 32;
 
       result.push(contentContainer);
 
