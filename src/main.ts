@@ -73,7 +73,7 @@ export default async function (): Promise<void> {
       metaTitle.fontName = blackFont;
       thumbnailFrame.appendChild(metaTitle);
       metaTitle.characters = project;
-      metaTitle.fontSize = 50;
+      metaTitle.fontSize = 64;
       metaTitle.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
       metaTitle.x = 420;
       metaTitle.y = 209;
@@ -96,17 +96,17 @@ export default async function (): Promise<void> {
         { type: "SOLID", color: hexToRgb(status.backgroundColor) },
       ];
 
-      let tagIcon = figma.createVector();
-      tagIcon.vectorPaths = InProgressPath.map((path) => ({
-        ...path,
-        data: svgPathPrettify(path.data),
-      }));
-      tagIcon.fills = [
-        {
-          type: "SOLID",
-          color: hexToRgb(status.textColor),
-        },
-      ];
+      // let tagIcon = figma.createVector();
+      // tagIcon.vectorPaths = InProgressPath.map((path) => ({
+      //   ...path,
+      //   data: svgPathPrettify(path.data),
+      // }));
+      // tagIcon.fills = [
+      //   {
+      //     type: "SOLID",
+      //     color: hexToRgb(status.textColor),
+      //   },
+      // ];
 
       const horizontalPadding = 32;
       const veritcalPadding = 16;
@@ -121,6 +121,10 @@ export default async function (): Promise<void> {
       tagContainer.cornerRadius = 12;
       tagContainer.primaryAxisSizingMode = "AUTO";
 
+
+
+  
+
       // Create title + description container
       const titleContainer = figma.createFrame();
       titleContainer.name = "Title Container";
@@ -134,15 +138,32 @@ export default async function (): Promise<void> {
       titleContainer.appendChild(tag);
       titleContainer.appendChild(tagContainer);
       tagContainer.appendChild(tag);
-      tagContainer.appendChild(tagIcon);
+      // tagContainer.appendChild(tagIcon);
       titleContainer.appendChild(metaTitle);
       titleContainer.clipsContent = false;
+
+       // Create tag container
+       const tagContainerFrame = figma.createFrame();
+       tagContainerFrame.name = "Tag Container";
+       tagContainerFrame.appendChild(tagContainer);
+       tagContainerFrame.layoutMode = "VERTICAL";
+       tagContainerFrame.primaryAxisSizingMode = "AUTO";
+       tagContainerFrame.clipsContent = false;
+       tagContainerFrame.fills = [
+        {
+          type: "SOLID",
+          color: { r: 0.1098039216, g: 0.1098039216, b: 0.1176470588 },
+        },
+      ];
 
       // Create content container
       const contentContainer = figma.createFrame();
       contentContainer.name = "Content Container";
       contentContainer.layoutMode = "VERTICAL";
       safeZone.appendChild(contentContainer);
+      //insert tag into content container
+      contentContainer.appendChild(tagContainerFrame);
+      // insert title into contentcontainer
       contentContainer.appendChild(titleContainer);
       contentContainer.clipsContent = false;
       contentContainer.resize(contentContainer.width, 360);
@@ -153,6 +174,8 @@ export default async function (): Promise<void> {
         },
       ];
       contentContainer.primaryAxisAlignItems = "CENTER";
+      
+         
 
       // Create description
       let descriptionNode = figma.createText();
@@ -162,7 +185,11 @@ export default async function (): Promise<void> {
       descriptionNode.characters = description;
       descriptionNode.fontSize = 24;
       descriptionNode.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+      descriptionNode.opacity = 0.7
       titleContainer.appendChild(descriptionNode);
+
+      // set spacing
+      contentContainer.verticalPadding = 32;
 
       result.push(contentContainer);
 

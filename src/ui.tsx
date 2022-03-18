@@ -154,6 +154,7 @@ function Plugin() {
             overflow: "hidden",
           }}
         >
+          
           <Text>Dark mode</Text>
           <Toggle onChange={handleDarkModeToggle} value={darkMode} />
         </div>
