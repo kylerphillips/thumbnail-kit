@@ -161,7 +161,7 @@ function Plugin() {
 
       <div
         style={{
-          backgroundColor: "#fbfbfb",
+          backgroundColor: "#ffffff",
           paddingTop: 20,
           paddingBottom: 20,
         }}
@@ -211,7 +211,7 @@ function Plugin() {
         </div>
       </div>
 
-      <VerticalSpace space="medium"></VerticalSpace>
+      <VerticalSpace space="small"></VerticalSpace>
       <Text bold>Description</Text>
       <VerticalSpace space="small"></VerticalSpace>
       <TextboxMultiline

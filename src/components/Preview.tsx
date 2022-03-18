@@ -55,9 +55,10 @@ export const Preview = ({
             />
             <p
               style={{
-                fontSize: 24,
+                fontSize: 20,
                 color: "#fff",
-                fontWeight: "black",
+                fontWeight: "900",
+                fontFamily: 'Inter',
                 margin: 0,
                 marginBottom: 10,
               }}
@@ -102,7 +103,7 @@ export const Preview = ({
                           width: 24,
                           height: 24,
                           borderRadius: "50%",
-                          border: "1px solid #1c1c1e",
+                          border: "2px solid #1c1c1e",
                           objectFit: "cover",
                         }}
                       />
@@ -137,7 +138,7 @@ export const Preview = ({
           >
             <Text
               style={{
-                fontSize: 15,
+                fontSize: 13,
               }}
               bold
             >
