@@ -7,6 +7,7 @@ export interface CreateThumbnailHandler extends EventHandler {
     project: string;
     description: string;
     status: StatusOption;
+    avatars: Avatar[];
   }) => void;
 }
 
@@ -65,5 +66,6 @@ export type DroppedImage = {
 export type Avatar = {
   id: string;
   url: string;
-  file: File;
+  file?: File | null;
+  bytes?: Uint8Array | null;
 };

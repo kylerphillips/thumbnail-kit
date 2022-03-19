@@ -33,6 +33,8 @@ import {
   ReadyFeedback,
 } from "./icons";
 
+import { fileToBytes } from "./utilities/images";
+
 function Plugin() {
   // handle image uploaded files
 
@@ -124,11 +126,20 @@ function Plugin() {
     statusOptions[0];
 
   const handleCreateThumbnailClick = useCallback(
-    function () {
+    async function () {
+      const convertedAvatars = await Promise.all(
+        avatars.map(async (avatar) => ({
+          ...avatar,
+          file: null,
+          bytes: avatar.file ? await fileToBytes(avatar.file) : null,
+        }))
+      );
+
       emit<CreateThumbnailHandler>("CREATE_THUMBNAIL", {
         project: project,
         description: description,
         status: { ...currentStatus, svg: null },
+        avatars: convertedAvatars,
       });
     },
     [project, description, currentStatus]
@@ -154,7 +165,6 @@ function Plugin() {
             overflow: "hidden",
           }}
         >
-          
           <Text>Dark mode</Text>
           <Toggle onChange={handleDarkModeToggle} value={darkMode} />
         </div>

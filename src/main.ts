@@ -10,7 +10,12 @@ import {
 import { InProgressPath } from "./icons";
 import svgPathPrettify from "svg-path-prettify";
 
-import { CloseHandler, CreateThumbnailHandler, StatusOption } from "./types";
+import {
+  Avatar,
+  CloseHandler,
+  CreateThumbnailHandler,
+  StatusOption,
+} from "./types";
 import { hexToRgb } from "./utilities/colors";
 
 export default async function (): Promise<void> {
@@ -26,10 +31,11 @@ export default async function (): Promise<void> {
       project: string;
       description: string;
       status: StatusOption;
+      avatars: Avatar[];
     }) {
       console.log("create thumbnail", options);
 
-      const { project, description, status } = options;
+      const { project, description, status, avatars } = options;
 
       // updateNodesSortOrder(result);
       figma.currentPage.selection = result;
@@ -121,10 +127,6 @@ export default async function (): Promise<void> {
       tagContainer.cornerRadius = 12;
       tagContainer.primaryAxisSizingMode = "AUTO";
 
-
-
-  
-
       // Create title + description container
       const titleContainer = figma.createFrame();
       titleContainer.name = "Title Container";
@@ -142,14 +144,14 @@ export default async function (): Promise<void> {
       titleContainer.appendChild(metaTitle);
       titleContainer.clipsContent = false;
 
-       // Create tag container
-       const tagContainerFrame = figma.createFrame();
-       tagContainerFrame.name = "Tag Container";
-       tagContainerFrame.appendChild(tagContainer);
-       tagContainerFrame.layoutMode = "VERTICAL";
-       tagContainerFrame.primaryAxisSizingMode = "AUTO";
-       tagContainerFrame.clipsContent = false;
-       tagContainerFrame.fills = [
+      // Create tag container
+      const tagContainerFrame = figma.createFrame();
+      tagContainerFrame.name = "Tag Container";
+      tagContainerFrame.appendChild(tagContainer);
+      tagContainerFrame.layoutMode = "VERTICAL";
+      tagContainerFrame.primaryAxisSizingMode = "AUTO";
+      tagContainerFrame.clipsContent = false;
+      tagContainerFrame.fills = [
         {
           type: "SOLID",
           color: { r: 0.1098039216, g: 0.1098039216, b: 0.1176470588 },
@@ -174,8 +176,6 @@ export default async function (): Promise<void> {
         },
       ];
       contentContainer.primaryAxisAlignItems = "CENTER";
-      
-         
 
       // Create description
       let descriptionNode = figma.createText();
@@ -185,17 +185,50 @@ export default async function (): Promise<void> {
       descriptionNode.characters = description;
       descriptionNode.fontSize = 24;
       descriptionNode.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
-      descriptionNode.opacity = 0.7
+      descriptionNode.opacity = 0.7;
       titleContainer.appendChild(descriptionNode);
 
       // set spacing
       contentContainer.itemSpacing = 32;
 
+      //create avatar stack
+      let avatarStack = figma.createFrame();
+      avatarStack.layoutMode = "HORIZONTAL";
+      avatarStack.fills = [];
+      avatarStack.clipsContent = false;
+
+      for (const avatar of avatars) {
+        let avatarItem = figma.createFrame();
+        avatarItem.resize(40, 56);
+        let innerAvatarItem = figma.createEllipse();
+        innerAvatarItem.resize(56, 56);
+        avatarItem.clipsContent = false;
+        let image = figma.createImage(avatar.bytes || new Uint8Array(0));
+        avatarItem.fills = [];
+        innerAvatarItem.fills = [
+          {
+            type: "IMAGE",
+            scaleMode: "FILL",
+            imageHash: image.hash,
+          },
+        ];
+        innerAvatarItem.strokes = [
+          {
+            type: "SOLID",
+            color: hexToRgb("#1C1C1E"),
+          },
+        ];
+        innerAvatarItem.strokeWeight = 3;
+
+        avatarItem.appendChild(innerAvatarItem);
+        avatarStack.appendChild(avatarItem);
+      }
+
+      contentContainer.appendChild(avatarStack);
+
       result.push(contentContainer);
 
       figma.setFileThumbnailNodeAsync(thumbnailFrame);
-
-      console.log("got this far");
 
       figma.closePlugin(
         formatSuccessMessage(
