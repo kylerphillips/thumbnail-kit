@@ -1,6 +1,6 @@
 import { h } from "preact";
 import { Document } from "../icons";
-import { Text } from "@create-figma-plugin/ui";
+import { IconWorld16, Text } from "@create-figma-plugin/ui";
 import { StatusPreview } from "./StatusPreview";
 
 export const Preview = ({
@@ -61,6 +61,9 @@ export const Preview = ({
                 fontFamily: 'Inter',
                 margin: 0,
                 marginBottom: 10,
+                width:230,
+                wordBreak: "break-word",
+                lineHeight: 1.2
               }}
             >
               {project || "File Name"}
@@ -70,7 +73,9 @@ export const Preview = ({
                 fontSize: 9,
                 color: "#d2d2d2",
                 margin: 0,
-                lineHeight: 1.5,
+                width:230,
+                wordBreak: "break-word",
+                lineHeight: 1.3
               }}
             >
               {description ||

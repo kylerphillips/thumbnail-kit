@@ -3,7 +3,7 @@
   "editorType": [
     "figma"
   ],
-  "id": "preact-rectangles",
+  "id": "thumbnail-kit",
   "name": "ThumbnailKit",
   "main": "build/main.js",
   "ui": "build/ui.js"

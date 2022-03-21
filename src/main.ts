@@ -36,14 +36,21 @@ export default async function (): Promise<void> {
       console.log("create thumbnail", options);
 
       const { project, description, status, avatars } = options;
-
-      // updateNodesSortOrder(result);
-      figma.currentPage.selection = result;
-      figma.viewport.scrollAndZoomIntoView(result);
+      
 
       // Code goes here for plugin to run
       const thumbnailFrame = figma.createFrame();
-      thumbnailFrame.name = project;
+
+       //conditional frame name logic
+       if (project.length > 1) {
+        thumbnailFrame.name = project;
+      }
+      if (project.length < 1) {
+        thumbnailFrame.name = "Cover";
+      }
+
+
+     
 
       // Set Autolayout for frame and direction, padding, spacing etc
       thumbnailFrame.resize(960, 480);
@@ -78,7 +85,17 @@ export default async function (): Promise<void> {
       await figma.loadFontAsync(blackFont);
       metaTitle.fontName = blackFont;
       thumbnailFrame.appendChild(metaTitle);
-      metaTitle.characters = project;
+
+      //conditional project name logic
+      if (project.length > 1) {
+        metaTitle.characters = project;
+      }
+      if (project.length < 1) {
+        metaTitle.characters = "Project name";
+      }
+
+
+     
       metaTitle.fontSize = 64;
       metaTitle.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
       metaTitle.x = 420;
@@ -143,6 +160,7 @@ export default async function (): Promise<void> {
       // tagContainer.appendChild(tagIcon);
       titleContainer.appendChild(metaTitle);
       titleContainer.clipsContent = false;
+      titleContainer.itemSpacing = 16
 
       // Create tag container
       const tagContainerFrame = figma.createFrame();
@@ -182,57 +200,96 @@ export default async function (): Promise<void> {
       let regularFont = { family: "Inter", style: "Regular" };
       await figma.loadFontAsync(regularFont);
       descriptionNode.fontName = regularFont;
-      descriptionNode.characters = description;
+
+
+       //conditional project name logic
+       if (description.length > 1) {
+        descriptionNode.characters = description;
+      }
+      if (description.length < 1) {
+        descriptionNode.characters = "Figma connects everyone in the design process so teams can deliver better products, faster.";
+      }
       descriptionNode.fontSize = 24;
       descriptionNode.fills = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
-      descriptionNode.opacity = 0.7;
+      descriptionNode.opacity = 0.8;
       titleContainer.appendChild(descriptionNode);
 
       // set spacing
       contentContainer.itemSpacing = 32;
 
-      //create avatar stack
-      let avatarStack = figma.createFrame();
-      avatarStack.layoutMode = "HORIZONTAL";
-      avatarStack.fills = [];
-      avatarStack.clipsContent = false;
 
-      for (const avatar of avatars) {
-        let avatarItem = figma.createFrame();
-        avatarItem.resize(40, 56);
-        let innerAvatarItem = figma.createEllipse();
-        innerAvatarItem.resize(56, 56);
-        avatarItem.clipsContent = false;
-        let image = figma.createImage(avatar.bytes || new Uint8Array(0));
-        avatarItem.fills = [];
-        innerAvatarItem.fills = [
-          {
-            type: "IMAGE",
-            scaleMode: "FILL",
-            imageHash: image.hash,
-          },
-        ];
-        innerAvatarItem.strokes = [
-          {
-            type: "SOLID",
-            color: hexToRgb("#1C1C1E"),
-          },
-        ];
-        innerAvatarItem.strokeWeight = 3;
+      function renderAvatarStack(avatars) {
+       
+        if (avatars.length > 1) {
+          let avatarStack = figma.createFrame();
+          avatarStack.layoutMode = "HORIZONTAL";
+          avatarStack.fills = [];
+          avatarStack.clipsContent = false;
+          
 
-        avatarItem.appendChild(innerAvatarItem);
-        avatarStack.appendChild(avatarItem);
+          for (const avatar of avatars) {
+            let avatarItem = figma.createFrame();
+            avatarItem.resize(40, 56);
+            let innerAvatarItem = figma.createEllipse();
+            innerAvatarItem.resize(56, 56);
+            avatarItem.clipsContent = false;
+            let image = figma.createImage(avatar.bytes || new Uint8Array(0));
+            avatarItem.fills = [];
+            innerAvatarItem.fills = [
+              {
+                type: "IMAGE",
+                scaleMode: "FILL",
+                imageHash: image.hash,
+              },
+            ];
+            innerAvatarItem.strokes = [
+              {
+                type: "SOLID",
+                color: hexToRgb("#1C1C1E"),
+              },
+            ];
+            innerAvatarItem.strokeWeight = 3;
+    
+            avatarItem.appendChild(innerAvatarItem);
+            avatarStack.appendChild(avatarItem);
+          }
+
+          avatarStack.resize(avatarStack.height, 56)
+    
+          contentContainer.appendChild(avatarStack);
+        }
+       
+        
       }
-
-      contentContainer.appendChild(avatarStack);
+      renderAvatarStack(avatars);
 
       result.push(contentContainer);
 
       figma.setFileThumbnailNodeAsync(thumbnailFrame);
 
+
+      // set width of title + description
+      metaTitle.resize(safeZone.width,metaTitle.height)
+      descriptionNode.resize(safeZone.width,descriptionNode.height)
+  
+
+
+      // Zoom in thumbnail
+
+      const newPage = figma.createPage();
+    newPage.name = 'Cover';
+    figma.currentPage = newPage;
+
+    newPage.appendChild(thumbnailFrame);
+
+      const frameScene: Array<SceneNode> = []
+      frameScene.push(thumbnailFrame);
+      figma.viewport.scrollAndZoomIntoView(result);
+
+
       figma.closePlugin(
         formatSuccessMessage(
-          `Inserted ${result.length} ${pluralize(result.length, "image")}`
+          `✨ Thumbnail created`
         )
       );
     }

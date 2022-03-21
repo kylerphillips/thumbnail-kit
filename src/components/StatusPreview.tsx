@@ -15,7 +15,7 @@ export const StatusPreview = ({ status, statusOptions, darkMode }) => {
         padding: "2px 8px",
         backgroundColor: backgroundColor,
         width: "fit-content",
-        marginBottom: 16,
+        marginBottom: 8,
         borderRadius: 4,
         display: "flex",
         alignItems: "center",
